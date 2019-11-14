@@ -2,7 +2,7 @@
 section: -1
 title: Ma_Sys.ma Artifact Script
 author: ["Linux-Fan, Ma_Sys.ma (Ma_Sys.ma@web.de)"]
-keywords: ["mdvlci", "maartifact", "maartifact.pl"]
+keywords: ["mdvlci", "maartifact.pl"]
 date: 2019/11/14 20:46:34
 lang: en-US
 x-masysma-name: maartifact
