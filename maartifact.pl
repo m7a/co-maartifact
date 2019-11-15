@@ -1,7 +1,8 @@
 #!/usr/bin/perl
-# maartifact.pl 1.0.0, Copyright (c) 2019 Ma_Sys.ma.
+# maartifact.pl 1.0.1, Copyright (c) 2019 Ma_Sys.ma.
 # For further info send an e-mail to Ma_Sys.ma@web.de
 
+#------------------------------------------------------------------[ General ]--
 use strict;
 use warnings FATAL => 'all';
 use autodie;
@@ -11,65 +12,69 @@ use Cwd            qw(abs_path cwd);
 require File::Temp;
 require File::Copy;
 require File::Copy::Recursive; # libfile-copy-recursive-perl
-require LWP::Simple; # libwww-perl
-require Git::Repository; # libgit-repository-perl
+require LWP::Simple;           # libwww-perl
+require Git::Repository;       # libgit-repository-perl
 
-my $root = abs_path(dirname($0)."/..");
+my $root   = abs_path(dirname($0)."/..");
 my $arroot = $root."/x-artifacts/managed";
 
-if(scalar @ARGV < 3) {
-	print("USAGE maartifact extract ARTIFACT DESTIR [DEFINITION]\n");
-	print("See source code for details.");
+if((scalar @ARGV < 3) or $ARGV[0] eq "--help") {
+	print("Usage maartifact download/require ARTIFACT DEFINITION\n");
+	print("Usage maartifact extract ARTIFACT DESTDIR [DEFINITION]\n");
+	print("See README.md/manpage maartifact(1) for details.\n");
 	exit(1);
 }
 
-if($ARGV[0] eq "extract") {
-	my $arfile = $ARGV[1];
-	my ($name, $_path, $suffix) = fileparse($arfile, '\.[^\.]*');
-	my $arfile_abs = "$arroot/$arfile";
-	# -- download --
-	if(not -f $arfile_abs and not -d $arfile_abs) {
-		print("[maartifact] trying to download artifact $arfile\n");
-		if(!defined($ARGV[3])) {
-			print("[maartifact] Artifact definition missing.\n");
+my $arfile = $ARGV[1];
+my ($name, $_path, $suffix) = fileparse($arfile, '\.[^\.]*');
+my $arfile_abs = "$arroot/$arfile";
+
+#-----------------------------------------------------------------[ Download ]--
+if(
+	(($ARGV[0] eq "extract") or ($ARGV[0] eq "download") or
+						($ARGV[0] eq "require")) and
+	((not -f $arfile_abs and not -d $arfile_abs) or
+						($ARGV[0] eq "download"))
+) {
+	print("[maartifact] download artifact $arfile\n");
+	my $artdef = $ARGV[2];
+	if(($ARGV[0] eq "extract") and !defined($ARGV[3])) {
+		print("[maartifact] artifact definition missing.\n");
+		exit(1);
+	} else {
+		$artdef = $ARGV[2];
+	}
+	mkdir($arroot) if(not -d $arroot);
+	if(($suffix eq ".deb") and ($artdef =~ m/^[a-z0-9-]+$/)) {
+		# regular package name
+		# TODO z SHOULD ALSO WORK W/O aptitude download as to enable this function on Windows and indepdendent of the currently running Debian release. OTOH the current variant has the advantage of taking an existing local debian mirror into consideration!
+		my $dldir = File::Temp->newdir();
+		my $prevwd = cwd();
+		chdir($dldir);
+		system("aptitude", "download", $artdef);
+		chdir($prevwd);
+		my @allf = glob("'$dldir/*.deb'");
+		if((scalar @allf) ne 1) {
+			print("[maartifact] glob non-unique: $dldir\n");
 			exit(1);
 		}
-		my $artdef = $ARGV[3];
-		mkdir($arroot) if(not -d $arroot);
-		if(($suffix eq ".deb") and ($artdef =~ m/^[a-z0-9-]+$/)) {
-			# regular package name
-			my $dldir = File::Temp->newdir();
-			my $prevwd = cwd();
-			chdir($dldir);
-			system("aptitude", "download", $artdef);
-			chdir($prevwd);
-			my @allf = glob("'$dldir/*.deb'");
-			if((scalar @allf) ne 1) {
-				print("[maartifact] Glob non-unique: $dldir\n");
-				exit(1);
-			}
-			File::Copy::move($allf[0], $arfile_abs);
-			print("[maartifact] aptitude download successful.\n");
-		} elsif($suffix eq ".git") {
-			# try git download
-			Git::Repository->run("clone", $artdef, $arfile_abs);
-		# For now, we try to do this with plain file downloads...
-		#} elsif(($suffix eq ".deb") and
-		#			($artdef =~ m/^[a-z0-9-]+=.+$/)) {
-		#	# archive.debian.org
-		#	print("[maartifact] ... N_IMPL\n");
-		#	exit(1);
-		} else {
-			# try file download
-			if(not LWP::Simple::is_success(LWP::Simple::getstore(
-						$artdef, $arfile_abs))) {
-				print("[maartifact] Artifact file download ".
-						"failed for $artdef.\n");
-				exit(1);
-			}
+		File::Copy::move($allf[0], $arfile_abs);
+		print("[maartifact] aptitude download successful.\n");
+	} elsif($suffix eq ".git") {
+		# try git download
+		Git::Repository->run("clone", $artdef, $arfile_abs);
+	} else {
+		# try file download
+		if(not LWP::Simple::is_success(LWP::Simple::getstore($artdef,
+								$arfile_abs))) {
+			print("[maartifact] download failed for $artdef.\n");
+			exit(1);
 		}
 	}
-	# -- extract --
+}
+
+#------------------------------------------------------------------[ Extract ]--
+if($ARGV[0] eq "extract") {
 	my $destdir = $ARGV[2];
 	mkdir($destdir) if(not -d $destdir);
 	if($suffix eq ".git") {
@@ -93,8 +98,4 @@ if($ARGV[0] eq "extract") {
 		print("[maartifact] Unknown suffix: $suffix\n");
 		exit(1);
 	}
-} else {
-	print("[maartifact] ".
-			"Currently only `extract` parameter is supported.\n");
-	exit(1);
 }

@@ -1,5 +1,5 @@
 ---
-section: -1
+section: 11
 title: Ma_Sys.ma Artifact Script
 author: ["Linux-Fan, Ma_Sys.ma (Ma_Sys.ma@web.de)"]
 keywords: ["mdvlci", "maartifact.pl"]
@@ -11,20 +11,47 @@ x-masysma-copyright: |
   Copyright (c) 2019 Ma_Sys.ma.
   For further info send an e-mail to Ma_Sys.ma@web.de.
 ---
-**WARNING: This is highly experimental.**
+Name
+----
+
+`maartifact` -- download and extract archive files.
+
+Synopsis
+--------
+
+	maartifact download ARTIFACT DEFINITION
+	maartifact require  ARTIFACT DEFINITION
+	maartifact extract  ARTIFACT DESTDIR [DEFINITION]
+
+Description
+-----------
 
 The absolute minimum of an artifact management system.
 This script is intended to automatically download and extract various forms
-of sources, mainly debian packages and compressed tarfiles. All downloads
-are stored under `../x-artifacts/managed` relative to the script's directory.
+of sources, mainly debian packages and compressed tarfiles.
 
-	USAGE maartifact extract ARTIFACT DESTDIR [DEFINITION]
+Options
+-------
 
-	ARTIFACT   Identifier for this artifact, e.g. ial_in_....deb
-	DESTDIR    Directory to extract the artifact's contents to.
-	DEFINITION String identifying this artifact
+## Commands
 
-The following definitions are possible
+download
+:   Download the given artifact even if it might already be present.
+require
+:   Download the given artifact if it is not present.
+extract
+:   Download the given artifact if it is not present and extract its contents
+    to `DESTDIR` afterwards.
+
+## Parameters
+
+------------  ---------------------------------------------------
+`ARTIFACT`    Identifier for this artifact, e.g. `ial_in_....deb`
+`DESTDIR`     Directory to extract the artifact's contents to.
+`DEFINITION`  String identifying this artifact (see next section)
+------------  ---------------------------------------------------
+
+## Definitions
 
 packagename
 :   If `ARTIFACT` ends on `.deb`, try to download it from this Debian
@@ -37,13 +64,23 @@ GIT
 URL
 :   Download artifact from URL (default)
 
-Example
+Examples
+--------
 
 	./maartifact.pl extract rxvt_unicode.deb sub rxvt-unicode
 
 This downloads the `rxvt-unicode` package and extracts it to a directory `sub`.
 
-Dependencies: External Programs
+Files
+-----
+
+All downloads are stored under `../x-artifacts/managed` relative to the script's
+directory.
+
+Dependencies
+------------
+
+External Programs
 :   `tar`, `7z`, `aptitude`, `git`
-Dependencies: Perl Modules (Debian package names)
+Perl Modules (Debian package names)
 :   `libfile-copy-recursive-perl`, `libwww-perl`, `libgit-repository-perl`
