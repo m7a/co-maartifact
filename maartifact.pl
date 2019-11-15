@@ -42,7 +42,7 @@ if(
 		print("[maartifact] artifact definition missing.\n");
 		exit(1);
 	} else {
-		$artdef = $ARGV[2];
+		$artdef = $ARGV[3];
 	}
 	mkdir($arroot) if(not -d $arroot);
 	if(($suffix eq ".deb") and ($artdef =~ m/^[a-z0-9-]+$/)) {
