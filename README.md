@@ -1,37 +1,37 @@
 ---
+x-masysma-name: maartifact
 section: 11
 title: Ma_Sys.ma Artifact Script
 author: ["Linux-Fan, Ma_Sys.ma (Ma_Sys.ma@web.de)"]
 keywords: ["mdvlci", "maartifact.pl"]
 date: 2019/11/14 20:46:34
 lang: en-US
-x-masysma-name: maartifact
 x-masysma-repository: https://www.github.com/m7a/co-maartifact
 x-masysma-copyright: |
   Copyright (c) 2019 Ma_Sys.ma.
   For further info send an e-mail to Ma_Sys.ma@web.de.
 ---
 Name
-----
+====
 
 `maartifact` -- download and extract archive files.
 
 Synopsis
---------
+========
 
 	maartifact download ARTIFACT DEFINITION
 	maartifact require  ARTIFACT DEFINITION
 	maartifact extract  ARTIFACT DESTDIR [DEFINITION]
 
 Description
------------
+===========
 
 The absolute minimum of an artifact management system.
 This script is intended to automatically download and extract various forms
 of sources, mainly debian packages and compressed tarfiles.
 
 Options
--------
+=======
 
 ## Commands
 
@@ -65,20 +65,20 @@ URL
 :   Download artifact from URL (default)
 
 Examples
---------
+========
 
 	./maartifact.pl extract rxvt_unicode.deb sub rxvt-unicode
 
 This downloads the `rxvt-unicode` package and extracts it to a directory `sub`.
 
 Files
------
+=====
 
 All downloads are stored under `../x-artifacts` relative to the script's
 directory.
 
 Dependencies
-------------
+============
 
 External Programs
 :   `tar`, `7z`, `aptitude`, `git`
