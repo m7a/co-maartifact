@@ -74,7 +74,7 @@ This downloads the `rxvt-unicode` package and extracts it to a directory `sub`.
 Files
 -----
 
-All downloads are stored under `../x-artifacts/managed` relative to the script's
+All downloads are stored under `../x-artifacts` relative to the script's
 directory.
 
 Dependencies

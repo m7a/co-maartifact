@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# maartifact.pl 1.0.1, Copyright (c) 2019 Ma_Sys.ma.
+# maartifact.pl 1.0.2, Copyright (c) 2019 Ma_Sys.ma.
 # For further info send an e-mail to Ma_Sys.ma@web.de
 
 #------------------------------------------------------------------[ General ]--
@@ -16,7 +16,7 @@ require LWP::Simple;           # libwww-perl
 require Git::Repository;       # libgit-repository-perl
 
 my $root   = abs_path(dirname($0)."/..");
-my $arroot = $root."/x-artifacts/managed";
+my $arroot = $root."/x-artifacts";
 
 if((scalar @ARGV < 3) or $ARGV[0] eq "--help") {
 	print("Usage maartifact download/require ARTIFACT DEFINITION\n");
