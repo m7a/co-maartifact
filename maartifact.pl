@@ -38,11 +38,13 @@ if(
 ) {
 	print("[maartifact] download artifact $arfile\n");
 	my $artdef = $ARGV[2];
-	if(($ARGV[0] eq "extract") and !defined($ARGV[3])) {
-		print("[maartifact] artifact definition missing.\n");
-		exit(1);
-	} else {
-		$artdef = $ARGV[3];
+	if($ARGV[0] eq "extract") {
+		if(defined($ARGV[3])) {
+			$artdef = $ARGV[3];
+		} else {
+			print("[maartifact] artifact definition missing.\n");
+			exit(1);
+		}
 	}
 	mkdir($arroot) if(not -d $arroot);
 	if(($suffix eq ".deb") and ($artdef =~ m/^[a-z0-9-]+$/)) {

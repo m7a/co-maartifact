@@ -7,6 +7,7 @@ keywords: ["mdvlci", "maartifact.pl"]
 date: 2019/11/14 20:46:34
 lang: en-US
 x-masysma-repository: https://www.github.com/m7a/co-maartifact
+x-masysma-website: https://masysma.lima-city.de/11/maartifact.xhtml
 x-masysma-owned: 1
 x-masysma-copyright: |
   Copyright (c) 2019 Ma_Sys.ma.
