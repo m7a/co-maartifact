@@ -10,7 +10,7 @@ x-masysma-repository: https://www.github.com/m7a/co-maartifact
 x-masysma-website: https://masysma.lima-city.de/11/maartifact.xhtml
 x-masysma-owned: 1
 x-masysma-copyright: |
-  Copyright (c) 2019 Ma_Sys.ma.
+  Copyright (c) 2019, 2020 Ma_Sys.ma.
   For further info send an e-mail to Ma_Sys.ma@web.de.
 ---
 Name
@@ -83,6 +83,6 @@ Dependencies
 ============
 
 External Programs
-:   `tar`, `7z`, `aptitude`, `git`
+:   (GNU) `tar`, `7z`, `aptitude`, `git`
 Perl Modules (Debian package names)
 :   `libfile-copy-recursive-perl`, `libwww-perl`, `libgit-repository-perl`
