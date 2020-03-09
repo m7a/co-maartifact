@@ -92,15 +92,15 @@ if($ARGV[0] eq "extract") {
 		# system("7z", "x", "-o$destdir", "$dldir/data.tar");
 		system("tar", "-C", "$destdir", "-xf", "$dldir/data.tar");
 		unlink("$dldir/data.tar");
-	} elsif($name =~ m/^.*\.tar\.(gz|xz|bz2)$/) {
+	} elsif($name =~ m/^.*\.tar$/) {
 		# extract .tar....
 		# note that this is not as portable as might seem:
 		# OpenBSD tar does not automatically recognize compressed
 		# input files and wants a decompressor specification for
 		# extraction. As of now, this problem is ignored.
 		system("tar", "-C", "$destdir", "-xf", $arfile_abs);
-	} elsif(($suffix eq ".zip") or ($suffix eq ".gz") or ($suffix eq ".xz") or
-							($suffix eq ".bz2")) {
+	} elsif(($suffix eq ".zip") or ($suffix eq ".gz") or 
+				($suffix eq ".xz") or ($suffix eq ".bz2")) {
 		# extract single-file archive or ZIP
 		system("7z", "x", "-y", "-o$destdir", $arfile_abs);
 	} else {
