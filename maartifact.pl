@@ -64,7 +64,8 @@ if(
 		print("[maartifact] aptitude download successful.\n");
 	} elsif($suffix eq ".git") {
 		# try git download
-		Git::Repository->run("clone", $artdef, $arfile_abs);
+		Git::Repository->run("clone", "--recursive", $artdef,
+								$arfile_abs);
 	} else {
 		# try file download
 		if(not LWP::Simple::is_success(LWP::Simple::getstore($artdef,
