@@ -70,7 +70,8 @@ if(
 		# try file download
 		if(not LWP::Simple::is_success(LWP::Simple::getstore($artdef,
 								$arfile_abs))) {
-			print("[maartifact] download failed for $artdef.\n");
+			print("[maartifact] download failed for $artdef ".
+						"(from $arfile_abs).\n");
 			exit(1);
 		}
 	}
