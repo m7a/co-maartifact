@@ -21,9 +21,9 @@ Name
 Synopsis
 ========
 
-	maartifact download ARTIFACT DEFINITION
-	maartifact require  ARTIFACT DEFINITION
-	maartifact extract  ARTIFACT DESTDIR [DEFINITION]
+	maartifact download ARTIFACT [-b BRANCH] DEFINITION
+	maartifact require  ARTIFACT [-b BRANCH] DEFINITION
+	maartifact extract  ARTIFACT DESTDIR [-b BRANCH] [DEFINITION]
 
 Description
 ===========
@@ -51,6 +51,7 @@ extract
 `ARTIFACT`    Identifier for this artifact, e.g. `ial_in_....deb`
 `DESTDIR`     Directory to extract the artifact's contents to.
 `DEFINITION`  String identifying this artifact (see next section)
+`BRANCH`      Optionally specify a git branch to checkout.
 ------------  ---------------------------------------------------
 
 ## Definitions

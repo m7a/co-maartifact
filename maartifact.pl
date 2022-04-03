@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# maartifact.pl 1.0.3, Copyright (c) 2019, 2020 Ma_Sys.ma.
+# maartifact.pl 1.0.3, Copyright (c) 2019, 2020, 2022 Ma_Sys.ma.
 # For further info send an e-mail to Ma_Sys.ma@web.de
 
 #------------------------------------------------------------------[ General ]--
@@ -19,10 +19,12 @@ my $root   = abs_path(dirname($0)."/..");
 my $arroot = $root."/x-artifacts";
 
 if((scalar @ARGV < 3) or $ARGV[0] eq "--help") {
-	print("Usage maartifact download/require ARTIFACT DEFINITION\n");
-	print("Usage maartifact extract ARTIFACT DESTDIR [DEFINITION]\n");
-	print("See README.md/manpage maartifact(1) for details.\n");
-	exit(1);
+	print <<~EOF;
+	Usage maartifact download/require ARTIFACT [-b BRANCH] DEFINITION
+	Usage maartifact extract ARTIFACT DESTDIR [-b BRANCH] [DEFINITION]\n
+
+	See README.md/manpage maartifact(1) for details.
+	EOF
 }
 
 my $arfile = $ARGV[1];
@@ -37,7 +39,20 @@ if(
 						($ARGV[0] eq "download"))
 ) {
 	print("[maartifact] download artifact $arfile\n");
-	my $artdef = $ARGV[2];
+
+	my $artdef;
+	my $branch;
+	if($ARGV[2] eq "-b") {
+		$artdef = $ARGV[4];
+		$branch = $ARGV[3];
+		if($branch !~ /^([a-z0-9_-]+|\.)+$/) {
+			print("[maartifact] misformatted branch name.\n");
+		}
+	} else {
+		$artdef = $ARGV[2];
+		$branch = "master";
+	}
+
 	if($ARGV[0] eq "extract") {
 		if(defined($ARGV[3])) {
 			$artdef = $ARGV[3];
@@ -46,6 +61,7 @@ if(
 			exit(1);
 		}
 	}
+
 	mkdir($arroot) if(not -d $arroot);
 	if(($suffix eq ".deb") and ($artdef =~ m/^[a-z0-9-]+$/)) {
 		# regular package name
@@ -66,6 +82,10 @@ if(
 		# try git download
 		Git::Repository->run("clone", "--recursive", $artdef,
 								$arfile_abs);
+		my $git = Git::Repository->new(work_tree => $arfile_abs);
+		$git->run("checkout", $branch);
+		$git->run("submodule", "init");
+		$git->run("submodule", "update", "--recursive");
 	} else {
 		# try file download
 		if(not LWP::Simple::is_success(LWP::Simple::getstore($artdef,
