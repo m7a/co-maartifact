@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# maartifact.pl 1.0.3, Copyright (c) 2019, 2020, 2022 Ma_Sys.ma.
+# maartifact.pl 1.1.0, Copyright (c) 2019, 2020, 2022 Ma_Sys.ma.
 # For further info send an e-mail to Ma_Sys.ma@web.de
 
 #------------------------------------------------------------------[ General ]--

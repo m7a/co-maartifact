@@ -30,7 +30,7 @@ Description
 
 The absolute minimum of an artifact management system.
 This script is intended to automatically download and extract various forms
-of sources, mainly debian packages and compressed tarfiles.
+of sources, i.e. debian packages, git repositories and compressed tarfiles.
 
 Options
 =======
@@ -63,7 +63,8 @@ packagename
     whether the user is running stable, testing or unstable.
 GIT
 :   Clone Git repository. For this to work, the artifact name needs to end on
-    `.git`.
+    `.git`. Optionally specify parameter `-b` to select a specific branch.
+    Submodules are included automatically.
 URL
 :   Download artifact from URL (default)
 
@@ -91,7 +92,7 @@ Perl Modules (Debian package names)
 License
 =======
 
-	Ma_Sys.ma Artifact Script, Copyright (c) 2019, 2020 Ma_Sys.ma.
+	Ma_Sys.ma Artifact Script, Copyright (c) 2019, 2020, 2022 Ma_Sys.ma.
 	For further info send an e-mail to Ma_Sys.ma@web.de.
 	
 	This program is free software: you can redistribute it and/or modify
