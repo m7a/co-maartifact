@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-# maartifact.pl 1.1.0, Copyright (c) 2019, 2020, 2022 Ma_Sys.ma.
+# maartifact.pl 1.1.1, Copyright (c) 2019, 2020, 2022 Ma_Sys.ma.
 # For further info send an e-mail to Ma_Sys.ma@web.de
 
 #------------------------------------------------------------------[ General ]--
@@ -40,26 +40,16 @@ if(
 ) {
 	print("[maartifact] download artifact $arfile\n");
 
-	my $artdef;
-	my $branch;
-	if($ARGV[2] eq "-b") {
-		$artdef = $ARGV[4];
-		$branch = $ARGV[3];
-		if($branch !~ /^([a-z0-9_-]+|\.)+$/) {
-			print("[maartifact] misformatted branch name.\n");
-		}
-	} else {
-		$artdef = $ARGV[2];
-		$branch = "master";
+	if($ARGV[0] eq "extract" and not(defined($ARGV[3]))) {
+		print("[maartifact] artifact definition missing.\n");
+		exit(1);
 	}
 
-	if($ARGV[0] eq "extract") {
-		if(defined($ARGV[3])) {
-			$artdef = $ARGV[3];
-		} else {
-			print("[maartifact] artifact definition missing.\n");
-			exit(1);
-		}
+	my $artdef = $ARGV[$#ARGV];
+	my $branch = ($ARGV[$#ARGV - 2] eq "-b")? $ARGV[$#ARGV - 1]: "master";
+	if($branch !~ /^([a-z0-9_-]+|\.)+$/) {
+		print("[maartifact] misformatted branch name.\n");
+		exit(1);
 	}
 
 	mkdir($arroot) if(not -d $arroot);
